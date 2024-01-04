@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:model="clr-namespace:SmartphoneShipmentsDemo"
+             x:Class="SmartphoneShipmentsDemo.MainPage">
+
+    <ContentPage.BindingContext>
+        <model:ViewModel></model:ViewModel>
+    </ContentPage.BindingContext>
+
+
+
+    <ContentPage.Content>
+        <Border Background="#e8ebe0" 
+                StrokeThickness="4"
+                StrokeShape="RoundRectangle 40"
+                Margin="30">
+
+            <Grid RowDefinitions="1*,7*" Margin="10,15,0,0" RowSpacing="0">
+                <!--Align Header-->
+                <Grid Grid.Row="0" RowDefinitions="*,*,*">
+
+                        <Label Text="Creating a Stacked Column Chart for Global Smartphone Shipments"
+                                TextColor="Black" 
+                                FontSize="18"
+                                FontFamily="TimeSpan"
+                                FontAttributes="Bold"
+                                Grid.Row="0"
+                                Margin="18,0,0,0"/>
+
+                         <Label Text="The stacked column chart showcases the quarterly smartphone shipments throughout 2022 (Q1 to Q4), while the line chart illustrates the corresponding market shares over the same period"
+                                TextColor="Black" 
+                                FontSize="12"
+                                FontFamily="TimeSpan"
+                                Grid.Row="1"
+                                Margin="18,3,0,0"/>
+                    <StackLayout Orientation="Horizontal" Grid.Row="2" Spacing="10" Margin="18,0,0,0">
+                      <BoxView BackgroundColor="#9aa573"
+                             HeightRequest="10"
+                             WidthRequest="10"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Start"
+                             Margin="0,4,0,0" />
+
+                    <Label Text="Smartphone Shipments 2022[Q1-Q4][in Millions]"
+                           TextColor="Black" 
+                           FontSize="12"/>
+
+                        <BoxView BackgroundColor="#555d3c"
+                             HeightRequest="2"
+                             WidthRequest="30"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Start"
+                             Margin="0,8,0,0"/>
+
+                    <Label Text="Smartphone Market Share 2022[in Percentage]"
+                           TextColor="Black" 
+                           FontSize="12"/>
+                    </StackLayout>
+                </Grid>
+             
+
+                    <chart:SfCartesianChart Grid.Row="1" >
+                      <!--Customise Tooltip--> 
+                        <chart:SfCartesianChart.Resources>
+                            <DataTemplate x:Key="tooltipTemplate">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Item.BrandName}"
+				                           TextColor="White"
+				                           FontAttributes="Bold"
+				                           FontSize="12"
+				                           HorizontalOptions="Center"
+				                           VerticalOptions="Center"/>
+                                   <Label Text=" : "
+				                          TextColor="White"
+				                          FontAttributes="Bold"
+				                          FontSize="12"
+				                          HorizontalOptions="Center"
+				                          VerticalOptions="Center"/>
+                                <Label Text="{Binding Item.MarketShare,StringFormat='{0:F1} %'}"
+				                         TextColor="White"
+				                         FontAttributes="Bold"
+				                         FontSize="12"
+                                       Margin="3,0,0,0"
+				                         HorizontalOptions="Center"
+				                         VerticalOptions="Center"/>   
+                            </StackLayout>
+                            </DataTemplate>
+                        </chart:SfCartesianChart.Resources>
+                            
+                         <!--X-Axis-->   
+                     <chart:SfCartesianChart.XAxes>
+                        <chart:CategoryAxis IsVisible="True" 
+                                            ShowMajorGridLines="False"
+                                            AxisLineOffset="30">
+                            <chart:CategoryAxis.LabelStyle>
+                                <chart:ChartAxisLabelStyle FontAttributes="Bold" />
+                            </chart:CategoryAxis.LabelStyle>
+                        </chart:CategoryAxis>
+                      </chart:SfCartesianChart.XAxes>
+
+                        <!--Y-Axis-->
+                    <chart:SfCartesianChart.YAxes>
+                        <chart:NumericalAxis ShowMajorGridLines="False"
+                                             Maximum="270" 
+                                             Interval="20" 
+                                             EdgeLabelsDrawingMode="Fit">
+                            <chart:NumericalAxis.LabelStyle>
+                                <chart:ChartAxisLabelStyle FontAttributes="Bold"/>
+                            </chart:NumericalAxis.LabelStyle>
+                        </chart:NumericalAxis>
+                        <chart:NumericalAxis  Name="YAxis" 
+                                              CrossesAt="{Static x:Double.MaxValue}"
+                                              ShowMajorGridLines="False"
+                                              EdgeLabelsDrawingMode="Fit">
+                            <chart:NumericalAxis.LabelStyle>
+                                <chart:ChartAxisLabelStyle LabelFormat="0'%"
+                                                           FontAttributes="Bold"/>
+                            </chart:NumericalAxis.LabelStyle>
+                        </chart:NumericalAxis>
+                    </chart:SfCartesianChart.YAxes>
+
+                        <!--Quater 1 Smartphone shipments value-->
+                    <chart:StackingColumnSeries ShowDataLabels="True"
+                                                ItemsSource="{Binding ShipmentsData}"
+                                                XBindingPath="BrandName" 
+                                                YBindingPath="Quarter1"
+                                                StrokeWidth="7"
+                                                Fill="#9aa573">
+                        <chart:StackingColumnSeries.DataLabelSettings>
+                            <chart:CartesianDataLabelSettings LabelPlacement="Inner"
+                                                              UseSeriesPalette="False"
+                                                              BarAlignment="Bottom">
+                                <chart:CartesianDataLabelSettings.LabelStyle>
+                                    <chart:ChartDataLabelStyle LabelFormat="0.##'M"
+                                                               TextColor="Black"/>
+                                </chart:CartesianDataLabelSettings.LabelStyle>
+                            </chart:CartesianDataLabelSettings>
+                        </chart:StackingColumnSeries.DataLabelSettings>
+                        
+                    </chart:StackingColumnSeries>
+
+
+                    <chart:StackingColumnSeries ShowDataLabels="True"
+                                                ItemsSource="{Binding ShipmentsData}"
+                                                XBindingPath="BrandName" 
+                                                YBindingPath="Quarter2"
+                                                 StrokeWidth="7"
+                                                Fill="#a5af83">
+                        <chart:StackingColumnSeries.DataLabelSettings>
+                            <chart:CartesianDataLabelSettings LabelPlacement="Inner"
+                                                              UseSeriesPalette="False"
+                                                              BarAlignment="Bottom">
+                                <chart:CartesianDataLabelSettings.LabelStyle>
+                                    <chart:ChartDataLabelStyle LabelFormat="0.##'M"
+                                                               TextColor="Black"/>
+                                </chart:CartesianDataLabelSettings.LabelStyle>
+                            </chart:CartesianDataLabelSettings>
+                        </chart:StackingColumnSeries.DataLabelSettings>
+                    </chart:StackingColumnSeries>
+
+                    <chart:StackingColumnSeries ShowDataLabels="True"
+                                                ItemsSource="{Binding ShipmentsData}"
+                                                XBindingPath="BrandName" 
+                                                YBindingPath="Quarter3"
+                                                Fill="#b0b992">
+                        <chart:StackingColumnSeries.DataLabelSettings>
+                            <chart:CartesianDataLabelSettings LabelPlacement="Inner"
+                                                              UseSeriesPalette="False"
+                                                              BarAlignment="Bottom">
+                                <chart:CartesianDataLabelSettings.LabelStyle>
+                                    <chart:ChartDataLabelStyle LabelFormat="0.##'M"
+                                                               TextColor="Black"/>
+                                </chart:CartesianDataLabelSettings.LabelStyle>
+                            </chart:CartesianDataLabelSettings>
+                        </chart:StackingColumnSeries.DataLabelSettings>
+                    </chart:StackingColumnSeries>
+
+                    <chart:StackingColumnSeries ShowDataLabels="True"
+                                                ItemsSource="{Binding ShipmentsData}"
+                                                XBindingPath="BrandName" 
+                                                YBindingPath="Quarter4"
+                                                Fill="#bbc3a2">
+                        <chart:StackingColumnSeries.DataLabelSettings>
+                            <chart:CartesianDataLabelSettings LabelPlacement="Inner" 
+                                                              UseSeriesPalette="False"
+                                                              BarAlignment="Bottom">
+                                <chart:CartesianDataLabelSettings.LabelStyle>
+                                    <chart:ChartDataLabelStyle TextColor="Black"
+                                                               LabelFormat="0.##'M"/>
+                                </chart:CartesianDataLabelSettings.LabelStyle>
+                            </chart:CartesianDataLabelSettings>
+                           
+                        </chart:StackingColumnSeries.DataLabelSettings>
+                    </chart:StackingColumnSeries>
+
+                    <chart:LineSeries XBindingPath="BrandName" 
+                                      YBindingPath="MarketShare" 
+                                      ItemsSource="{Binding ShipmentsData}"
+                                      YAxisName="YAxis"
+                                      ShowMarkers="True"
+                                      EnableTooltip="True"
+                                      TooltipTemplate="{StaticResource tooltipTemplate}"
+                                      Fill="#555d3c">
+                        <chart:LineSeries.MarkerSettings>
+                            <chart:ChartMarkerSettings Type="Circle"
+                                                       Height="8"
+                                                       Width="8"/>
+                        </chart:LineSeries.MarkerSettings>
+                    </chart:LineSeries>
+                </chart:SfCartesianChart>
+            </Grid>
+        </Border>
+    </ContentPage.Content>
+</ContentPage>
